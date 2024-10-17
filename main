@@ -1,6 +1,7 @@
 import random
+
 #Card values
-card_and_value = {"2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "10": 10, "Jack": 10, "Queen": 10, "King": 10}
+card_and_value = {"2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "10": 10, "Jack": 10, "Queen": 10, "King": 10, "Ace": "N/A"}
 #missing Ace
 
 #player class
@@ -10,34 +11,40 @@ class Player:
         self.money = money
 
 #Function defintions:
+
 #First game functions:
 def first_game():
-    print("Would you like to begin playing? (Yes/No)")
+    print("David: Would you like to begin playing? (Yes/No)")
     answer = input()
     if answer == "Yes":
-        print("Alright then, goodluck!")
+        print("David: Alright then, goodluck!")
     elif answer == "No":
-        print("Ready whenever you are!")
+        print("David: Ready whenever you are!")
         first_game()
     else:
         missunderstanding_first_game()
 def missunderstanding_first_game():
-    print("Sorry I didn't quite understand, would you like to begin playing? (Yes/No)?")
+    print("David: Sorry I didn't quite understand, would you like to begin playing? (Yes/No)?")
     answer = input()
     if answer == "Yes":
-        print("Alright then, goodluck!")
+        print("David: Alright then, goodluck!")
     elif answer == "No":
-        print("Ready whenever you are!")
+        print("David: Ready whenever you are!")
         first_game()
     else:
         missunderstanding_first_game()
 
-
-
-
-
-
-
+#Ace func:
+def ace():
+    print("David: Would you like to use your Ace as a 1 or an 11? (1/11)")
+    answer = input()
+    if answer == "1":
+        pass
+    elif answer == "11":
+        pass
+    else: 
+        print("David: Sorry I didn't quite catch that")
+        ace()
 
 
 
@@ -45,10 +52,20 @@ def missunderstanding_first_game():
 
 #Player creation
 player_1 = Player("nothing", 100)
+
 #Opening UI lines
-print("Hello and welcome to the Prometheus Casino. My name is David and I will be your dealer today, what is your name?")
+print("David: Hello and welcome to the Prometheus Casino. My name is David and I will be your dealer today, what is your name?")
 player_1.name = input()
-print("Hello {name} and goodluck!".format(name = player_1.name)) 
+print("David: Hello {name} and goodluck!".format(name = player_1.name)) 
 
 # init first game
 first_game()
+def get_bet():
+    print("David: How much would you like to bet?")
+    answer = input()
+    answer = int(answer)
+    if answer > player_1.money:
+        print("David: Sorry sir you do not have that much money! Let's try again.")
+        get_bet()
+    else:
+        return answer
