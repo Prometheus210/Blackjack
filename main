@@ -1,1 +1,17 @@
+import random
+#Card values
+card_and_value = {"2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "10": 10, "Jack": 10, "Queen": 10, "King": 10}
+#missing Ace
 
+#player class
+class Player:
+    def __init__(self, name, money):
+        name = self.name
+        money = self.money
+
+#Player creation
+player_1 = Player()
+#UI lines
+print("Hello and welcome to the Prometheus Casino. My name is David and I will be your dealer today, what is your name?")
+player_1.name = input()
+print("Hello {name}".format(name = player_1.name))
