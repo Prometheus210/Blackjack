@@ -19,8 +19,8 @@ def start_game():
     answer = input()
     if answer == "Yes":
         print("David: Alright then, goodluck!")
-        that = first_draw()
-        print(that)
+        first_draw_list = first_draw()
+        player_options()
     elif answer == "No":
         print("David: Ready whenever you are!")
         start_game()
@@ -84,8 +84,49 @@ def first_draw():
     dealer_total = dealer_card_1[1] + dealer_card_2[1]
     print("*You drew a {card1} and a {card2}".format(card1 = player_card_1[0], card2 = player_card_2[0]))
     print("*Your total is {total}!".format(total = player_total))
-    return player_card_1, player_card_2, dealer_card_1, dealer_card_2
+    if player_total == 21 and dealer_total != 21:
+        win()
+    if player_total != 21 and dealer_total == 21:
+        lose()
+    if player_total == 21 and dealer_total == 21:
+        draw()
+    else:
+        return player_card_1, player_card_2, dealer_card_1, dealer_card_2
   
+#Test
+
+def draw():
+    pass
+
+def lose():
+    pass
+def win():
+    pass
+
+def player_options():
+    print("David: Would you like to hit, stand or double down?")
+    answer = input()
+    if answer == "hit":
+        hit()
+    elif answer == "stand":
+        stand()
+    elif answer == "double down":
+        double_down()
+    else:
+        print("David: Sorry I didn't quite understand that")
+        player_options()
+def dealer_options():
+    pass
+
+def hit():
+    player_card_3 = list(draw_card())
+    print("*You drew a {name}*".format(name = player_card_3[0]))
+    player_total = first_draw_list[0][1] + first_draw_list[1][1] + player_card_3[1]
+    print("David: Your new total is {total}".format(total = player_total))
+def stand():
+    dealer_options()
+def double_down():
+    pass
 
 
 
@@ -99,10 +140,3 @@ print("David: Hello {name} and goodluck!".format(name = player_1.name))
 
 # init first game
 start_game()
-def hit():
-    pass
-def stand():
-    pass
-def double_down():
-    pass
-
