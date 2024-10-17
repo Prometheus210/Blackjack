@@ -1,7 +1,8 @@
-import random
+from random import randint
 
 #Card values
 card_and_value = {"2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "10": 10, "Jack": 10, "Queen": 10, "King": 10, "Ace": "N/A"}
+deck_of_cards = ["Ace","Ace","Ace","Ace","2","2","2","2","3","3","3","3","4","4","4","4","5","5","5","5","6","6","6","6","7","7","7","7","8","8","8","8","9","9","9","9","10","10","10""10","Jack","Jack","Jack","Jack","Queen","Queen","Queen","Queen","King","King","King","King"]
 #missing Ace
 
 #player class
@@ -13,26 +14,27 @@ class Player:
 #Function defintions:
 
 #First game functions:
-def first_game():
+def start_game():
     print("David: Would you like to begin playing? (Yes/No)")
     answer = input()
     if answer == "Yes":
         print("David: Alright then, goodluck!")
+        first_draw()
     elif answer == "No":
         print("David: Ready whenever you are!")
-        first_game()
+        start_game()
     else:
-        missunderstanding_first_game()
-def missunderstanding_first_game():
+        missunderstanding_start_game()
+def missunderstanding_start_game():
     print("David: Sorry I didn't quite understand, would you like to begin playing? (Yes/No)?")
     answer = input()
     if answer == "Yes":
         print("David: Alright then, goodluck!")
     elif answer == "No":
         print("David: Ready whenever you are!")
-        first_game()
+        start_game()
     else:
-        missunderstanding_first_game()
+        missunderstanding_start_game()
 
 #Ace func:
 def ace():
@@ -45,8 +47,31 @@ def ace():
     else: 
         print("David: Sorry I didn't quite catch that")
         ace()
-
-
+#Bet func
+def get_bet():
+    print("David: How much would you like to bet?")
+    answer = input()
+    answer = int(answer)
+    if answer > player_1.money:
+        print("David: Sorry sir you do not have that much money! Let's try again.")
+        get_bet()
+    else:
+        return answer
+#Draw func
+def draw_card():
+    int = randint(0,len(deck_of_cards)) - 1
+    #Unsure on above code, research?
+    card_name = deck_of_cards[int]
+    card_value = card_and_value[card_name]
+    deck_of_cards.pop(int)
+    return card_name,card_value
+def first_draw():
+    print("*David deals the cards to you and himself*")
+    player_card_1 = draw_card()
+    dealer_card_1 = draw_card()
+    player_card_2 = draw_card()
+    dealer_card_2 = draw_card()
+    print("*You drew a {card1} and a {card2}".format(card1 = player_card_1[0], card2 = player_card_2[0]))
 
 
 
@@ -59,13 +84,11 @@ player_1.name = input()
 print("David: Hello {name} and goodluck!".format(name = player_1.name)) 
 
 # init first game
-first_game()
-def get_bet():
-    print("David: How much would you like to bet?")
-    answer = input()
-    answer = int(answer)
-    if answer > player_1.money:
-        print("David: Sorry sir you do not have that much money! Let's try again.")
-        get_bet()
-    else:
-        return answer
+start_game()
+def hit():
+    pass
+def stand():
+    pass
+def double_down()
+    pass
+
