@@ -5,13 +5,13 @@ card_and_value = {"2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9
 
 #player class
 class Player:
-    def __init__(self, name, money):
-        name = self.name
-        money = self.money
+    def __init__(self,name, money):
+        self.name = name
+        self.money = money
 
 #Player creation
-player_1 = Player()
+player_1 = Player("nothing", 100)
 #UI lines
 print("Hello and welcome to the Prometheus Casino. My name is David and I will be your dealer today, what is your name?")
 player_1.name = input()
-print("Hello {name}".format(name = player_1.name))
+print("Hello {name}".format(name = player_1.name))  #player_1.name
