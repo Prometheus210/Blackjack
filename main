@@ -9,9 +9,46 @@ class Player:
         self.name = name
         self.money = money
 
+#Function defintions:
+#First game functions:
+def first_game():
+    print("Would you like to begin playing? (Yes/No)")
+    answer = input()
+    if answer == "Yes":
+        print("Alright then, goodluck!")
+    elif answer == "No":
+        print("Ready whenever you are!")
+        first_game()
+    else:
+        missunderstanding_first_game()
+def missunderstanding_first_game():
+    print("Sorry I didn't quite understand, would you like to begin playing? (Yes/No)?")
+    answer = input()
+    if answer == "Yes":
+        print("Alright then, goodluck!")
+    elif answer == "No":
+        print("Ready whenever you are!")
+        first_game()
+    else:
+        missunderstanding_first_game()
+
+
+
+
+
+
+
+
+
+
+
+
 #Player creation
 player_1 = Player("nothing", 100)
-#UI lines
+#Opening UI lines
 print("Hello and welcome to the Prometheus Casino. My name is David and I will be your dealer today, what is your name?")
 player_1.name = input()
-print("Hello {name}".format(name = player_1.name))  #player_1.name
+print("Hello {name} and goodluck!".format(name = player_1.name)) 
+
+# init first game
+first_game()
