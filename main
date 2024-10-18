@@ -14,13 +14,15 @@ class Player:
 #Global variables:
 first_draw_list = []
 player_total = 0
-
+bet = 0
 
 #Function defintions:
 
 #First game functions:
 def start_game():
-    print("David: Would you like to begin playing? (Yes/No)")
+    global player_total
+    global first_draw_list
+    print("David: Would you like to play a game? (Yes/No)")
     answer = input()
     if answer == "Yes":
         print("David: Alright then, goodluck!")
@@ -58,6 +60,7 @@ def ace():
         ace()
 #Bet func
 def get_bet():
+    global bet
     print("David: How much would you like to bet?")
     answer = input()
     answer = int(answer)
@@ -65,7 +68,7 @@ def get_bet():
         print("David: Sorry sir you do not have that much money! Let's try again.")
         get_bet()
     else:
-        return answer
+        bet += answer
 #Draw func
 def draw_card():
     int = randint(0,(len(deck_of_cards)-1))
@@ -105,7 +108,6 @@ def first_draw():
         first_draw_list.append(player_card_2)
         first_draw_list.append(dealer_card_1)
         first_draw_list.append(dealer_card_2)
-        print(first_draw_list)
   
 #Test
 
@@ -113,7 +115,11 @@ def draw():
     pass
 
 def lose():
-    pass
+    global bet
+    print("David: You lose!")
+    player_1.money -= bet
+    print("David: You now have £{money} left!".format(money= player_1.money))
+    start_game()
 def win():
     pass
 
