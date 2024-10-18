@@ -15,6 +15,7 @@ class Player:
 first_draw_list = []
 player_total = 0
 bet = 0
+dealer_total = 0
 
 #Function defintions:
 
@@ -22,12 +23,14 @@ bet = 0
 def start_game():
     global player_total
     global first_draw_list
+    global dealer_total
     print("David: Would you like to play a game? (Yes/No)")
     answer = input()
     if answer == "Yes":
         print("David: Alright then, goodluck!")
         first_draw_list = []
         player_total = 0
+        dealer_total = 0
         get_bet()
         first_draw()
         player_options()
@@ -80,6 +83,7 @@ def draw_card():
     return card_name, card_value
 def first_draw():
     global player_total
+    global dealer_total
     print("*David deals the cards to you and himself*")
     player_card_1 = list(draw_card())
     dealer_card_1 = list(draw_card())
@@ -95,7 +99,8 @@ def first_draw():
         dealer_card_2[1] = 11
     player_total += player_card_1[1]
     player_total += player_card_2[1]
-    dealer_total = dealer_card_1[1] + dealer_card_2[1]
+    dealer_total += dealer_card_1[1]
+    dealer_total += dealer_card_2[1]
     print("*You drew a {card1} and a {card2}".format(card1 = player_card_1[0], card2 = player_card_2[0]))
     print("*Your total is {total}!".format(total = player_total))
     if player_total == 21 and dealer_total != 21:
@@ -136,7 +141,7 @@ def player_options():
         print("David: Sorry I didn't quite understand that")
         player_options()
 def dealer_options():
-    pass
+
 
 
 def hit():
