@@ -69,6 +69,7 @@ def get_bet():
         get_bet()
     else:
         bet += answer
+        player_1.money -= bet
 #Draw func
 def draw_card():
     int = randint(0,(len(deck_of_cards)-1))
@@ -117,7 +118,6 @@ def draw():
 def lose():
     global bet
     print("David: You lose!")
-    player_1.money -= bet
     print("David: You now have £{money} left!".format(money= player_1.money))
     start_game()
 def win():
@@ -153,11 +153,22 @@ def hit():
         #NEEDS MORE
     elif player_total < 21:
         player_options()
-
 def stand():
     dealer_options()
 def double_down():
-    pass
+    global player_total
+    global bet
+    bet = bet * 2
+    new_player_card = list(draw_card())
+    first_draw_list.append(new_player_card)
+    print("*You drew a {name}*".format(name = new_player_card[0]))
+    player_total += new_player_card[1]
+    print("David: Your new total is {total}".format(total = player_total))
+    print("David: Your new bet is £{bets}!".format(bets = bet))
+    if player_total > 21:
+        lose()
+    elif player_total <= 21:
+        dealer_options()
 
 
 
