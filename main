@@ -15,8 +15,9 @@ class Player:
 first_draw_list = []
 player_total = 0
 bet = 0
+final_bet = 0
 dealer_total = 0
-
+dealer_cards = []
 #Function defintions:
 
 #First game functions:
@@ -24,6 +25,7 @@ def start_game():
     global player_total
     global first_draw_list
     global dealer_total
+    global dealer_cards
     print("David: Would you like to play a game? (Yes/No)")
     answer = input()
     if answer == "Yes":
@@ -31,6 +33,7 @@ def start_game():
         first_draw_list = []
         player_total = 0
         dealer_total = 0
+        dealer_cards = []
         get_bet()
         first_draw()
         player_options()
@@ -76,7 +79,6 @@ def get_bet():
 #Draw func
 def draw_card():
     int = randint(0,(len(deck_of_cards)-1))
-    print(str(int))
     card_name = deck_of_cards[int]
     card_value = card_and_value[card_name]
     deck_of_cards.pop(int)
@@ -84,31 +86,36 @@ def draw_card():
 def first_draw():
     global player_total
     global dealer_total
+    global dealer_cards
     print("*David deals the cards to you and himself*")
     player_card_1 = list(draw_card())
     dealer_card_1 = list(draw_card())
     player_card_2 = list(draw_card())
     dealer_card_2 = list(draw_card())
+    dealer_cards.append(dealer_card_1)
+    dealer_cards.append(dealer_card_2)
+    print("*You drew a {card1} and a {card2}".format(card1 = player_card_1[0], card2 = player_card_2[0]))
     if player_card_1[0] == "Ace":
         player_card_1[1] = ace()
     if player_card_2[0] == "Ace":
         player_card_2[1] = ace()
     if dealer_card_1[0] == "Ace":
         dealer_card_1[1] = 11
-    if dealer_card_2[0] == "Ace":
+    if dealer_card_2[0] == "Ace" and dealer_card_1[0] != "Ace":
         dealer_card_2[1] = 11
+    if dealer_card_2[0] == "Ace" and dealer_card_1[0] == "Ace":
+        dealer_card_2[1] = 1
     player_total += player_card_1[1]
     player_total += player_card_2[1]
     dealer_total += dealer_card_1[1]
     dealer_total += dealer_card_2[1]
-    print("*You drew a {card1} and a {card2}".format(card1 = player_card_1[0], card2 = player_card_2[0]))
     print("*Your total is {total}!".format(total = player_total))
     if player_total == 21 and dealer_total != 21:
-        win()
+        final_calc()
     if player_total != 21 and dealer_total == 21:
-        lose()
+        final_calc()
     if player_total == 21 and dealer_total == 21:
-        draw()
+        final_calc()
     else:
         first_draw_list.append(player_card_1)
         first_draw_list.append(player_card_2)
@@ -117,16 +124,56 @@ def first_draw():
   
 #Test
 
+def final_calc():
+    global player_total
+    global dealer_total
+    print("*Davids total was {total}*".format(total = dealer_total))
+    if player_total == dealer_total:
+        draw()
+    elif player_total > 21 and dealer_total > 21:
+        draw()
+    elif dealer_total <= 21 and player_total > 21:
+        lose()
+    elif player_total <= 21 and dealer_total > 21:
+        win()
+    elif player_total <= 21 and dealer_total < player_total:
+        win()
+    elif dealer_total <= 21 and player_total < dealer_total:
+        lose()
+    elif player_total == 21 and dealer_total != 21:
+        win()
+    elif player_total != 21 and dealer_total == 21:
+        lose()
+    elif player_total == 21 and dealer_total == 21:
+        draw()
+
+    
+
+
 def draw():
-    pass
+    global bet
+    print("David: We drew!")
+    player_1.money += bet 
+    print("David: You still have £{money}!".format(money= player_1.money))
+    start_game()
+
 
 def lose():
     global bet
     print("David: You lose!")
     print("David: You now have £{money} left!".format(money= player_1.money))
-    start_game()
+    if player_1.money <= 0:
+        print("David: It seems you've ran out of money, please come back another time!")
+    elif player_1.money > 0:
+        start_game()
 def win():
-    pass
+    global bet
+    global final_bet
+    print("David: You win!")
+    player_1.money += (bet * 2)
+    print("David: You now have £{money}!".format(money= player_1.money))
+    start_game()
+
 
 def player_options():
     print("David: Would you like to hit, stand or double down?")
@@ -140,7 +187,41 @@ def player_options():
     else:
         print("David: Sorry I didn't quite understand that")
         player_options()
+def player_options_2():
+    print("David: Would you like to hit or stand?")
+    answer = input()
+    if answer == "hit":
+        hit()
+    elif answer == "stand":
+        stand()
+    else:
+        print("David: Sorry I didn't quite understand that")
+        player_options()
 def dealer_options():
+    global dealer_total
+    global dealer_cards
+    print("David: I drew a {card1} and a {card2}".format(card1 = dealer_cards[0][0], card2 = dealer_cards[1][0]))
+    dealer_calc()
+def dealer_calc():
+    global dealer_total
+    global dealer_cards
+    if dealer_total > 21:
+        final_calc()
+    if dealer_total == 21:
+        final_calc()
+    if dealer_total < 21:
+        if dealer_total >= 17:
+            final_calc()
+        else:
+            new_dealer_card = list(draw_card())
+            if new_dealer_card[0] == "Ace":
+                if dealer_total > 10:
+                    new_dealer_card[1] = 1
+                elif dealer_total <= 10:
+                    new_dealer_card[1] = 11
+            dealer_total += new_dealer_card[1]
+            print("*David drew a {new}*".format(new = new_dealer_card[0]))
+            dealer_calc()
 
 
 
@@ -152,12 +233,12 @@ def hit():
     player_total += new_player_card[1]
     print("David: Your new total is {total}".format(total = player_total))
     if player_total > 21:
-        lose()
+        dealer_options()
     elif player_total == 21:
         dealer_options()
         #NEEDS MORE
     elif player_total < 21:
-        player_options()
+        player_options_2()
 def stand():
     dealer_options()
 def double_down():
@@ -167,6 +248,8 @@ def double_down():
     new_player_card = list(draw_card())
     first_draw_list.append(new_player_card)
     print("*You drew a {name}*".format(name = new_player_card[0]))
+    if new_player_card[0] == "Ace":
+        new_player_card[1] = ace()
     player_total += new_player_card[1]
     print("David: Your new total is {total}".format(total = player_total))
     print("David: Your new bet is £{bets}!".format(bets = bet))
