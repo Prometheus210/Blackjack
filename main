@@ -3,6 +3,7 @@ from random import randint
 #Card values
 card_and_value = {"2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "10": 10, "Jack": 10, "Queen": 10, "King": 10, "Ace": "N/A"}
 deck_of_cards = ["Ace","Ace","Ace","Ace","2","2","2","2","3","3","3","3","4","4","4","4","5","5","5","5","6","6","6","6","7","7","7","7","8","8","8","8","9","9","9","9","10","10","10","10","Jack","Jack","Jack","Jack","Queen","Queen","Queen","Queen","King","King","King","King"]
+card_grammer = {"2": "a", "3": "a", "4": "a", "5": "a", "6": "a", "7": "a", "8": "an", "9": "a", "10": "a", "Jack": "a", "Queen": "a", "King": "a", "Ace": "an"}
 #missing Ace
 
 #player class
@@ -19,8 +20,6 @@ final_bet = 0
 dealer_total = 0
 dealer_cards = []
 #Function defintions:
-
-#First game functions:
 def start_game():
     global player_total
     global first_draw_list
@@ -52,8 +51,6 @@ def missunderstanding_start_game():
         start_game()
     else:
         missunderstanding_start_game()
-
-#Ace func:
 def ace():
     print("David: Would you like to use your Ace as a 1 or an 11? (1/11)")
     answer = input()
@@ -64,7 +61,6 @@ def ace():
     else: 
         print("David: Sorry I didn't quite catch that")
         ace()
-#Bet func
 def get_bet():
     global bet
     print("David: How much would you like to bet?")
@@ -76,7 +72,6 @@ def get_bet():
     else:
         bet += answer
         player_1.money -= bet
-#Draw func
 def draw_card():
     int = randint(0,(len(deck_of_cards)-1))
     card_name = deck_of_cards[int]
@@ -94,7 +89,9 @@ def first_draw():
     dealer_card_2 = list(draw_card())
     dealer_cards.append(dealer_card_1)
     dealer_cards.append(dealer_card_2)
-    print("*You drew a {card1} and a {card2}".format(card1 = player_card_1[0], card2 = player_card_2[0]))
+    c1g = card_grammer[player_card_1[0]]
+    c2g = card_grammer[player_card_2[0]]
+    print("*You drew {g1} {card1} and {g2} {card2}*".format(card1 = player_card_1[0], card2 = player_card_2[0], g1 = c1g, g2 = c2g))
     if player_card_1[0] == "Ace":
         player_card_1[1] = ace()
     if player_card_2[0] == "Ace":
@@ -121,9 +118,6 @@ def first_draw():
         first_draw_list.append(player_card_2)
         first_draw_list.append(dealer_card_1)
         first_draw_list.append(dealer_card_2)
-  
-#Test
-
 def final_calc():
     global player_total
     global dealer_total
@@ -146,18 +140,12 @@ def final_calc():
         lose()
     elif player_total == 21 and dealer_total == 21:
         draw()
-
-    
-
-
 def draw():
     global bet
     print("David: We drew!")
     player_1.money += bet 
     print("David: You still have £{money}!".format(money= player_1.money))
     start_game()
-
-
 def lose():
     global bet
     print("David: You lose!")
@@ -173,8 +161,6 @@ def win():
     player_1.money += (bet * 2)
     print("David: You now have £{money}!".format(money= player_1.money))
     start_game()
-
-
 def player_options():
     print("David: Would you like to hit, stand or double down?")
     answer = input()
@@ -200,7 +186,9 @@ def player_options_2():
 def dealer_options():
     global dealer_total
     global dealer_cards
-    print("David: I drew a {card1} and a {card2}".format(card1 = dealer_cards[0][0], card2 = dealer_cards[1][0]))
+    c1g = card_grammer[dealer_cards[0][0]]
+    c2g = card_grammer[dealer_cards[1][0]]
+    print("David: I drew {g1} {card1} and {g2} {card2}".format(card1 = dealer_cards[0][0], card2 = dealer_cards[1][0], g1 = c1g, g2 = c2g))
     dealer_calc()
 def dealer_calc():
     global dealer_total
@@ -220,16 +208,15 @@ def dealer_calc():
                 elif dealer_total <= 10:
                     new_dealer_card[1] = 11
             dealer_total += new_dealer_card[1]
-            print("*David drew a {new}*".format(new = new_dealer_card[0]))
+            ncg = card_grammer[new_dealer_card[0]]
+            print("*David drew {g} {new}*".format(new = new_dealer_card[0], g = ncg))
             dealer_calc()
-
-
-
 def hit():
     global player_total
     new_player_card = list(draw_card())
     first_draw_list.append(new_player_card)
-    print("*You drew a {name}*".format(name = new_player_card[0]))
+    ncg = card_grammer[new_player_card[0]]
+    print("*You drew {g} {name}*".format(name = new_player_card[0], g = ncg))
     player_total += new_player_card[1]
     print("David: Your new total is {total}".format(total = player_total))
     if player_total > 21:
@@ -247,7 +234,8 @@ def double_down():
     bet = bet * 2
     new_player_card = list(draw_card())
     first_draw_list.append(new_player_card)
-    print("*You drew a {name}*".format(name = new_player_card[0]))
+    ncg = card_grammer[new_player_card[0]]
+    print("*You drew {g} {name}*".format(name = new_player_card[0], g = ncg))
     if new_player_card[0] == "Ace":
         new_player_card[1] = ace()
     player_total += new_player_card[1]
