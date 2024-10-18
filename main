@@ -13,7 +13,7 @@ class Player:
 
 #Global variables:
 first_draw_list = []
-
+player_total = 0
 
 
 #Function defintions:
@@ -25,6 +25,8 @@ def start_game():
     if answer == "Yes":
         print("David: Alright then, goodluck!")
         first_draw_list = []
+        player_total = 0
+        get_bet()
         first_draw()
         player_options()
     elif answer == "No":
@@ -73,6 +75,7 @@ def draw_card():
     deck_of_cards.pop(int)
     return card_name, card_value
 def first_draw():
+    global player_total
     print("*David deals the cards to you and himself*")
     player_card_1 = list(draw_card())
     dealer_card_1 = list(draw_card())
@@ -86,7 +89,8 @@ def first_draw():
         dealer_card_1[1] = 11
     if dealer_card_2[0] == "Ace":
         dealer_card_2[1] = 11
-    player_total = player_card_1[1] + player_card_2[1]
+    player_total += player_card_1[1]
+    player_total += player_card_2[1]
     dealer_total = dealer_card_1[1] + dealer_card_2[1]
     print("*You drew a {card1} and a {card2}".format(card1 = player_card_1[0], card2 = player_card_2[0]))
     print("*Your total is {total}!".format(total = player_total))
@@ -128,11 +132,22 @@ def player_options():
 def dealer_options():
     pass
 
+
 def hit():
-    player_card_3 = list(draw_card())
-    print("*You drew a {name}*".format(name = player_card_3[0]))
-    player_total = first_draw_list[0][1] + first_draw_list[1][1] + player_card_3[1]
+    global player_total
+    new_player_card = list(draw_card())
+    first_draw_list.append(new_player_card)
+    print("*You drew a {name}*".format(name = new_player_card[0]))
+    player_total += new_player_card[1]
     print("David: Your new total is {total}".format(total = player_total))
+    if player_total > 21:
+        lose()
+    elif player_total == 21:
+        dealer_options()
+        #NEEDS MORE
+    elif player_total < 21:
+        player_options()
+
 def stand():
     dealer_options()
 def double_down():
