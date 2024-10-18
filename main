@@ -2,7 +2,7 @@ from random import randint
 
 #Card values
 card_and_value = {"2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "10": 10, "Jack": 10, "Queen": 10, "King": 10, "Ace": "N/A"}
-deck_of_cards = ["Ace","Ace","Ace","Ace","2","2","2","2","3","3","3","3","4","4","4","4","5","5","5","5","6","6","6","6","7","7","7","7","8","8","8","8","9","9","9","9","10","10","10""10","Jack","Jack","Jack","Jack","Queen","Queen","Queen","Queen","King","King","King","King"]
+deck_of_cards = ["Ace","Ace","Ace","Ace","2","2","2","2","3","3","3","3","4","4","4","4","5","5","5","5","6","6","6","6","7","7","7","7","8","8","8","8","9","9","9","9","10","10","10","10","Jack","Jack","Jack","Jack","Queen","Queen","Queen","Queen","King","King","King","King"]
 #missing Ace
 
 #player class
@@ -10,6 +10,11 @@ class Player:
     def __init__(self,name, money):
         self.name = name
         self.money = money
+
+#Global variables:
+first_draw_list = []
+
+
 
 #Function defintions:
 
@@ -19,7 +24,8 @@ def start_game():
     answer = input()
     if answer == "Yes":
         print("David: Alright then, goodluck!")
-        first_draw_list = first_draw()
+        first_draw_list = []
+        first_draw()
         player_options()
     elif answer == "No":
         print("David: Ready whenever you are!")
@@ -60,12 +66,12 @@ def get_bet():
         return answer
 #Draw func
 def draw_card():
-    int = randint(0,(len(deck_of_cards)+2))
-    #Unsure on above code, research?
+    int = randint(0,(len(deck_of_cards)-1))
+    print(str(int))
     card_name = deck_of_cards[int]
     card_value = card_and_value[card_name]
     deck_of_cards.pop(int)
-    return card_name,card_value
+    return card_name, card_value
 def first_draw():
     print("*David deals the cards to you and himself*")
     player_card_1 = list(draw_card())
@@ -74,12 +80,12 @@ def first_draw():
     dealer_card_2 = list(draw_card())
     if player_card_1[0] == "Ace":
         player_card_1[1] = ace()
-    elif player_card_2[0] == "Ace":
+    if player_card_2[0] == "Ace":
         player_card_2[1] = ace()
     if dealer_card_1[0] == "Ace":
         dealer_card_1[1] = 11
-    elif dealer_card_1[0] == "Ace":
-        dealer_card_1[1] = 11
+    if dealer_card_2[0] == "Ace":
+        dealer_card_2[1] = 11
     player_total = player_card_1[1] + player_card_2[1]
     dealer_total = dealer_card_1[1] + dealer_card_2[1]
     print("*You drew a {card1} and a {card2}".format(card1 = player_card_1[0], card2 = player_card_2[0]))
@@ -91,7 +97,11 @@ def first_draw():
     if player_total == 21 and dealer_total == 21:
         draw()
     else:
-        return player_card_1, player_card_2, dealer_card_1, dealer_card_2
+        first_draw_list.append(player_card_1)
+        first_draw_list.append(player_card_2)
+        first_draw_list.append(dealer_card_1)
+        first_draw_list.append(dealer_card_2)
+        print(first_draw_list)
   
 #Test
 
